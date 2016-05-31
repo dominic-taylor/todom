@@ -1,17 +1,14 @@
 body {
   text-align: center;
 }
-form{
-  border: solid purple 3px;
 
-
-}
-.btn, .button {
+.btn {
   background-color: rgba(128, 0, 128, 0.24);
-  display: inline;
+  display: inline-block;
   width: 200px;
   height: 33px;
-  margin: 10px;
+  margin: auto;
+  margin-top: 10px;
   font-size: larger;
 }
  #new{
@@ -24,6 +21,10 @@ form{
     background-color: rgba(0, 0, 255, 0.16);
     width: 500px;
     height: 500px;
-    display: inline-block;;
+    margin: auto;
     font-size: 20px;
+}
+
+li {
+  background-color: inherit;
 }
