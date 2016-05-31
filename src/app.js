@@ -24,29 +24,25 @@ document.addEventListener("DOMContentLoaded", function(event) {
    }, false);
 
    var getTasks = document.getElementById('getTasks')
-   getTasks.addEventListener("click", function(e){
-      e.preventDefault()
-      getTasks()
-    }, false);
+   getTasks.addEventListener("click", getSavedTasks, false);
 
-function getTasks() {
-  console.log('event attacthed')
+function getSavedTasks() {
   request
     .get('/api/v1/tasks')
     .end(function(err, res){
-      console.log("get listening")
       var savedTasks = JSON.parse(res.text)
       displayTasks(savedTasks)
     })
 }
  function displayTasks(savedTasks) {
-   //for each savedTasks addNewTodo()
-   return
- }
+   var loopLen = Object.keys(savedTasks.tasks).length
+    for(var i = 0; i < loopLen; i++){
+      addNewTodo(savedTasks.tasks[i])
+    }
+  }
 function addNewTodo(task){
-  var newTask
-  if (!task){
-    newTask  = document.querySelector('input[type=text]').value
+  var newTask = task
+  if (!task){ newTask = document.querySelector('input[type=text]').value
   }
   var newTodo = document.createElement('li')
   newTodo.innerHTML = newTask
