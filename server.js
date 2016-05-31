@@ -1,13 +1,18 @@
 var express = require('express');
 var app = express();
 var path = require('path');
+var fs = require('fs');
 
 app.set('port', 3000);
 
 app.use(express.static(path.join(__dirname, 'client')));
 
 app.get('/api/v1/tasks', function (req, res) {
-  res.json({tasks:["Take out the rubbish", "Make dinner", "Take in washing"]})
+  fs.readFile('data/db.json', 'utf8', function (err, data){
+      if (err) throw err
+      res.json(data)
+    }
+  )
 })
 
 

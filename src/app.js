@@ -30,7 +30,7 @@ function getSavedTasks() {
   request
     .get('/api/v1/tasks')
     .end(function(err, res){
-      var savedTasks = JSON.parse(res.text)
+      var savedTasks = JSON.parse(res.body)
       displayTasks(savedTasks)
     })
 }
@@ -42,8 +42,8 @@ function getSavedTasks() {
   }
 function addNewTodo(task){
   var newTask = task
-  if (!task){ newTask = document.querySelector('input[type=text]').value
-  }
+  if (!task){ newTask = document.querySelector('input[type=text]').value  }
+
   var newTodo = document.createElement('li')
   newTodo.innerHTML = newTask
 
