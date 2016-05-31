@@ -1,3 +1,5 @@
+var request = require('superagent')
+
 document.addEventListener("DOMContentLoaded", function(event) {
    console.log("DOM fully loaded and parsed");
 
@@ -19,10 +21,33 @@ document.addEventListener("DOMContentLoaded", function(event) {
    taskForm.addEventListener("submit", function(e){
      e.preventDefault()
      addNewTodo()
-   }, false)
+   }, false);
 
-function addNewTodo(){
-  var newTask = document.querySelector('input[type=text]').value
+   var getTasks = document.getElementById('getTasks')
+   getTasks.addEventListener("click", function(e){
+      e.preventDefault()
+      getTasks()
+    }, false);
+
+function getTasks() {
+  console.log('event attacthed')
+  request
+    .get('/api/v1/tasks')
+    .end(function(err, res){
+      console.log("get listening")
+      var savedTasks = JSON.parse(res.text)
+      displayTasks(savedTasks)
+    })
+}
+ function displayTasks(savedTasks) {
+   //for each savedTasks addNewTodo()
+   return
+ }
+function addNewTodo(task){
+  var newTask
+  if (!task){
+    newTask  = document.querySelector('input[type=text]').value
+  }
   var newTodo = document.createElement('li')
   newTodo.innerHTML = newTask
 

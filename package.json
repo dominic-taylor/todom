@@ -2,10 +2,12 @@
   "name": "todom",
   "version": "1.0.0",
   "description": "code practice app",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "bundle": "browserify src/app.js -o client/bundle.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "node-dev server.js",
+    "watch": "watchify src/app.js -o client/bundle.js -dv"
   },
   "repository": {
     "type": "git",
@@ -20,6 +22,11 @@
   "homepage": "https://github.com/dominic-taylor/todom#readme",
   "dependencies": {
     "browserify": "^13.0.1",
-    "express": "^4.13.4"
+    "express": "^4.13.4",
+    "superagent": "^2.0.0"
+  },
+  "devDependencies": {
+    "node-dev": "^3.1.3",
+    "watchify": "^3.7.0"
   }
 }
