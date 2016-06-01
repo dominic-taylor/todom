@@ -15,6 +15,14 @@ app.get('/api/v1/tasks', function (req, res) {
   )
 })
 
+app.post('/api/v1/save', function (req, res){
+  console.log('post hooked to route')
+  // fs.writeFile('data/db.json', tasks.json, function (err){
+  //   if (err) throw err
+  //   console.log('tasks saved')
+  // })
+})
+
 
 var server = app.listen(app.get('port'), function() {
   var port = server.address().port;
