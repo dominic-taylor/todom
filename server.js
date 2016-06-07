@@ -1,10 +1,12 @@
 var express = require('express');
+var bodyParser = require('body-parser');
 var app = express();
 var path = require('path');
 var fs = require('fs');
 
 app.set('port', 3000);
 
+app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'client')));
 
 app.get('/api/v1/tasks', function (req, res) {
@@ -16,8 +18,13 @@ app.get('/api/v1/tasks', function (req, res) {
 })
 
 app.post('/api/v1/save', function (req, res){
-  console.log('post hooked to route')
-  // fs.writeFile('data/db.json', tasks.json, function (err){
+  console.log('post hooked to route ')
+  var tasks = req.body
+  console.log('server req body'+ tasks)
+  console.log(Object.keys(req));
+
+  // console.log(tasks);
+  //   fs.writeFile('data/db.json', JSON.stringify(tasks, null, 2), 'utf-8', function (err){
   //   if (err) throw err
   //   console.log('tasks saved')
   // })

@@ -34,7 +34,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
      request
       .post('/api/v1/save')
       .end(function(err, res){
-        console.log('herte')
+        if(err) console.log(err);
+        var taskData = document.getElementsByTagName('li')
+        console.log('client '+ tasks[0]);
+        res.send(taskData)
       })
    }
 function getSavedTasks() {
