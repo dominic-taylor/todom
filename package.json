@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/dominic-taylor/todom#readme",
   "dependencies": {
+    "body-parser": "^1.15.1",
     "browserify": "^13.0.1",
     "express": "^4.13.4",
     "fs": "0.0.2",

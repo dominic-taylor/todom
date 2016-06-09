@@ -14,18 +14,32 @@ document.addEventListener("DOMContentLoaded", function(event) {
      }
    }, false);
 
-   var taskDoneBtn = document.getElementById('done');
+   var taskDoneBtn = document.getElementById('doneBtn');
    taskDoneBtn.addEventListener("click", removeTask, false);
 
-   var taskForm = document.getElementById('taskForm')
-   taskForm.addEventListener("submit", function(e){
+   var submitTask = document.getElementById('taskForm')
+   submitTask.addEventListener("submit", function(e){
      e.preventDefault()
      addNewTodo()
    }, false);
 
-   var getTasks = document.getElementById('getTasks')
-   getTasks.addEventListener("click", getSavedTasks, false);
+   var getTasksBtn = document.getElementById('getTasksBtn')
+   getTasksBtn.addEventListener("click", getSavedTasks, false);
 
+   var saveTasksBtn = document.getElementById('saveTasksBtn')
+   saveTasksBtn.addEventListener("click", saveTasks, false);
+
+   function saveTasks(){
+     console.log('listener hooked up')
+     request
+      .post('/api/v1/save')
+      .end(function(err, res){
+        if(err) console.log(err);
+        var taskData = document.getElementsByTagName('li')
+        console.log('client '+ tasks[0]);
+        res.send(taskData)
+      })
+   }
 function getSavedTasks() {
   request
     .get('/api/v1/tasks')
