@@ -9,7 +9,7 @@
   <body>
     <div id='wrapper'>
       <form id='taskForm'>
-        <input id='new' type="text" name="name" value="Things To Do">
+        <input id='new' type="text" name="name" onclick="this.select()" value="Must remember to...">
         <div id='btn-box'>
           <input class='btn' type="submit" name="name" value="ADD">
       </form>
@@ -19,7 +19,7 @@
       </div> <!-- btn-box -->
 
         <div id='old'>
-          <h3>TO DO</h3>
+          <h3>To Do</h3>
           <ol id='list'>
             <li>Do the dishes</li>
           </ol>
