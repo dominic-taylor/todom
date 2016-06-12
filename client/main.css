@@ -1,28 +1,33 @@
-body {
-  text-align: center;
-}
 
 .btn {
   background-color: rgba(128, 0, 128, 0.24);
-  display: inline-block;
-  width: 200px;
-  height: 33px;
+  width: 50%;
+  height: 20px;
   margin: auto;
-  margin-top: 10px;
-  font-size: larger;
+}
+#btn-box {
+  display: block;
+  width: 100%;
+}
+#wrapper{
+  width: 100%;
+  text-align: center;
 }
  #new{
   background-color: rgba(255, 0, 0, 0.16);
   display: inline;
-  width: 500px;
-  font-size: 20px;
+  width: 33%;
+  font-size: 10px;
 }
- #old{
-    background-color: rgba(0, 0, 255, 0.16);
-    width: 500px;
-    height: 500px;
-    margin: auto;
-    font-size: 20px;
+#old{
+  background-color: rgba(0, 0, 255, 0.16);
+
+  height: 800px;
+  margin: auto;
+  font-size: 10px;
+}
+#taskForm {
+  width: 90%:
 }
 
 li {
