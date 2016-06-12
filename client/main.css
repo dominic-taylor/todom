@@ -1,30 +1,33 @@
 
 .btn {
+  display: inline;
   background-color: rgba(128, 0, 128, 0.24);
-  width: 50%;
-  height: 20px;
+  width: 48%;
+  height: 33px;
   margin: auto;
+  font-size: 25px;
 }
 #btn-box {
-  display: block;
+  display: inline-block;
   width: 100%;
 }
 #wrapper{
+  overflow: hidden;
   width: 100%;
   text-align: center;
 }
  #new{
   background-color: rgba(255, 0, 0, 0.16);
   display: inline;
-  width: 33%;
-  font-size: 10px;
+  height: 40px;
+  width: 95%;
+  font-size: 30px;
 }
 #old{
   background-color: rgba(0, 0, 255, 0.16);
-
   height: 800px;
   margin: auto;
-  font-size: 10px;
+  font-size: 30px;
 }
 #taskForm {
   width: 90%:
@@ -32,4 +35,5 @@
 
 li {
   background-color: inherit;
+  text-align: justify;
 }
