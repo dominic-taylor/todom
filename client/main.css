@@ -37,3 +37,10 @@ li {
   background-color: inherit;
   text-align: justify;
 }
+@media (min-width: 640px) {
+  #wrapper {
+    width: 640px;
+    margin: auto;
+    margin-top: 25px;
+  }
+}
