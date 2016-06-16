@@ -77,12 +77,13 @@ function addNewTodo(task){
 }
 
 function removeTask() {
+  var list = document.querySelector('ol')
   var listItems = document.getElementsByTagName('li')
   var listLength = listItems.length;
   var i = 0;
   while(i<listLength) {
     if (listItems[i].style.backgroundColor == 'rgba(0, 188, 212, 0.631373)'){
-      list.removeChild(doneItems[i]);
+      list.removeChild(listItems[i]);
     }
     i++
   }
