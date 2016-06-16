@@ -9,6 +9,10 @@ app.set('port', 3000);
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'client')));
 
+app.get('/', function (req, res){
+  res.redirect('client/index.html')
+})
+
 app.get('/api/v1/tasks', function (req, res) {
   fs.readFile('data/db.json', 'utf8', function (err, data){
       if (err) throw err
