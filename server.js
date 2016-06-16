@@ -4,7 +4,7 @@ var app = express();
 var path = require('path');
 var fs = require('fs');
 
-app.set('port', 3000);
+
 
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'client')));
@@ -30,8 +30,11 @@ app.post('/api/v1/save', function (req, res){
   })
 })
 
+var port = app.listen(process.env.PORT || 3000)
+app.listen(port);
 
-var server = app.listen(app.get('port'), function() {
-  var port = server.address().port;
-  console.log('Server is up on port '+port);
-});
+//
+// var server = app.listen(app.get('port'), function() {
+//   var port = server.address().port;
+//   console.log('Server is up on port '+port);
+// });
