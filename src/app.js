@@ -77,9 +77,8 @@ function addNewTodo(task){
 }
 
 function removeTask() {
-  var list = document.querySelector('ol')
   var listItems = document.getElementsByTagName('li')
-  var listLength = doneItems.length;
+  var listLength = listItems.length;
   var i = 0;
   while(i<listLength) {
     if (listItems[i].style.backgroundColor == 'rgba(0, 188, 212, 0.631373)'){
