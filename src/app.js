@@ -2,25 +2,6 @@ var request = require('superagent')
 
 document.addEventListener("DOMContentLoaded", function(event) {
 
-var dayList = document.getElementsByClassName('new');// list elements
-dayList.addEventListener('click', function (event) {
-
- if (event.target.tagName === 'LI' && event.target.style.backgroundColor != 'rgba(0, 188, 212, 0.631373)') {
-   event.target.style.backgroundColor = 'rgba(0, 188, 212, 0.63)'
- }
- else {
-   event.target.style.backgroundColor = ''
- }
-}, false);
-
-
-var submitTask = document.getElementById('taskForm')
-submitTask.addEventListener("submit", function(e){
- e.preventDefault()
- addNewTodo()
-}, false);
-
-
 var getTasksBtn = document.getElementById('getTasksBtn')
 getTasksBtn.addEventListener("click", getSavedTasks, false);
 
@@ -40,10 +21,11 @@ function saveTasks(){
 
 function getTaskData() {
   var taskData = document.getElementsByClassName('new')
+  console.log('taskData ', taskData);
   var taskArr = []
   for (var i=0; i<taskData.length; i++){
-    console.log('listener hooked up '+ taskData[i].innerHTML)
-    taskArr[i] = taskData[i].innerHTML
+    console.log('listener hooked up '+ taskData[i].value)
+    taskArr[i] = taskData[i].value
   }
   return taskArr
 }
@@ -52,28 +34,28 @@ function getSavedTasks() {
   request
   .get('/api/v1/tasks')
   .end(function(err, res){
-    var savedTasks = JSON.parse(res.body)
-    displayTasks(savedTasks)
+    if (err) console.log(err);
+    var saved = JSON.parse(res.body)
+    console.log('res.body cli ', res.body);
+    console.log('saved.tasks ', saved.tasks[8]);
+    displayTasks(saved)
   })
 }
 
 function displayTasks(savedTasks) {
-
   var loopLen = Object.keys(savedTasks.tasks).length
   for(var i = 0; i < loopLen; i++){
     addNewTodo(savedTasks.tasks[i])
   }
 }
 
-function addNewTodo(task){
-  var newTask = task
-  // if (!task){ newTask = document.querySelector('input[type=text]').value }
-
-  var newTodo = document.createElement('li')
-  newTodo.innerHTML = newTask
-
-  var list = document.querySelector('ol')
-  list.appendChild(newTodo)
+function addNewTodo(task){ // need to change this in new set up
+  var dayPoints = document.getElementsByClassName('new')
+  console.log('task ', task);
+  console.log('daypoints  ', dayPoints);
+  for (var i = 0; i < dayPoints.length; i++) {
+    dayPoints[i].value = task[i]
+  }
 }
 
 
