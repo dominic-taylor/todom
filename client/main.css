@@ -16,7 +16,8 @@
   background-color: whitesmoke;
 }
 .btn:active{
-  background-color: whitesmoke;
+  color: white; 
+  background-color: blue;
   border: inset 1px;
 }
 #btn-box {
@@ -28,25 +29,38 @@
   width: 100%;
   text-align: center;
 }
- #new{
-  background-color: rgba(255, 0, 0, 0.16);
-  display: inline;
-  height: 40px;
-  width: 95%;
-  margin-bottom: 10px;
-  font-size: 30px;
+
+.new{
+ background-color: rgba(255, 0, 0, 0.16);
+ display: inline;
+ height: 40px;
+ width: 80%;
+ margin-bottom: 10px;
+ font-size: 30px;
 }
 #old{
   background-color: rgba(0, 0, 255, 0.16);
-  height: 800px;
+  height: 850px;
   margin: auto;
   font-size: 25px;
 }
 #taskForm {
   width: 90%:
 }
-
+#mon {
+  display: none:
+}
+p {
+  display: inline;
+}
+ul {
+  text-align: left;
+  margin-left: 0;
+  padding-left: 1em;
+  text-indent: -1em;
+}
 li {
+  list-style-type: none;
   background-color: inherit;
   text-align: justify;
   font-family: sans-serif;
