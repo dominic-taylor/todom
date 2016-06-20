@@ -36,27 +36,16 @@ function getSavedTasks() {
   .end(function(err, res){
     if (err) console.log(err);
     var saved = JSON.parse(res.body)
-    console.log('res.body cli ', res.body);
-    console.log('saved.tasks ', saved.tasks[8]);
     displayTasks(saved)
   })
 }
 
 function displayTasks(savedTasks) {
+  var dayPoints = document.getElementsByClassName('new')
   var loopLen = Object.keys(savedTasks.tasks).length
   for(var i = 0; i < loopLen; i++){
-    addNewTodo(savedTasks.tasks[i])
+    dayPoints[i].value = savedTasks.tasks[i]
   }
 }
-
-function addNewTodo(task){ // need to change this in new set up
-  var dayPoints = document.getElementsByClassName('new')
-  console.log('task ', task);
-  console.log('daypoints  ', dayPoints);
-  for (var i = 0; i < dayPoints.length; i++) {
-    dayPoints[i].value = task[i]
-  }
-}
-
 
 }); //DOM ready braces
