@@ -49,5 +49,9 @@ function displayTasks(savedTasks) {
     dayPoints[i].value = savedTasks[i].replace(/"/g, "")
   }
 }
+// update ?
 
+
+
+//destroy ?
 }); //DOM ready braces
