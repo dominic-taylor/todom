@@ -35,16 +35,18 @@ function getSavedTasks() {
   .get('/api/v1/tasks')
   .end(function(err, res){
     if (err) console.log(err);
-    var saved = JSON.parse(res.body)
-    displayTasks(saved)
+    var saved = res.body[0].task
+    savedarr = saved.substring(1, saved.length-1).split(",")
+    displayTasks(savedarr)
   })
 }
 
 function displayTasks(savedTasks) {
   var dayPoints = document.getElementsByClassName('new')
-  var loopLen = Object.keys(savedTasks.tasks).length
+  console.log(savedTasks);
+  var loopLen = savedTasks.length
   for(var i = 0; i < loopLen; i++){
-    dayPoints[i].value = savedTasks.tasks[i]
+    dayPoints[i].value = savedTasks[i].replace(/"/g, "")
   }
 }
 

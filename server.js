@@ -23,19 +23,22 @@ app.get('/', function (req, res){
 })
 
 app.get('/api/v1/tasks', function (req, res) {
-  fs.readFile('data/db.json', 'utf8', function (err, data){
-      if (err) throw err
-      res.json(data)
-    }
-  )
+  knex.select('*').from('tasks').where({id: 1})
+    .then(function(data){
+      res.send(data)
+    })
+    .catch(function (err) {
+        console.log(err)
+    })
 })
 
 app.post('/api/v1/save', function (req, res){
-
+//need to make sure you can save blank strings and the like.
+//maybe put handler in client side?
 
 console.log('req.body ', req.body);
     var taskArr = req.body.tasks
-console.log('taskarr ', taskArr[0]);
+    console.log('taskArr ', taskArr);
     knex.insert({task: taskArr}).into('tasks')
     .then(function (data) {
       console.log("Tasks saved")
@@ -43,16 +46,7 @@ console.log('taskarr ', taskArr[0]);
     .catch(function(err){
       console.log(err);
     })
-     // var tasks = JSON.stringify(req.body)
-    // fs.writeFile('data/db.json', tasks, 'utf-8', function (err){
-    // if (err) throw err
 })
 
 var port = app.listen(process.env.PORT || 3000)
 app.listen(port);
-
-//
-// var server = app.listen(app.get('port'), function() {
-//   var port = server.address().port;
-//   console.log('Server is up on port '+port);
-// });
