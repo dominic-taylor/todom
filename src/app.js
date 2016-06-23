@@ -8,6 +8,16 @@ getTasksBtn.addEventListener("click", getSavedTasks, false);
 var saveTasksBtn = document.getElementById('saveTasksBtn')
 saveTasksBtn.addEventListener("click", saveTasks, false);
 
+var logIn = document.getElementById('logIn')
+logIn.addEventListener("click", findUser, false);
+
+function findUser() {
+  //get name and pass from field
+  // pass to ?
+  request
+
+}
+
 
 function saveTasks(){
   var list = getTaskData()

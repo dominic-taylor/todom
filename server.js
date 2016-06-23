@@ -1,10 +1,17 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-var path = require('path');
-var fs = require('fs');
+var express = require('express')
+var app = express()
+var port = process.env.PORT || 3000
 var Knex = require('knex')
+var passport = require('passport')
+var flash = require('connect-flash')
+var path = require('path')
+
+var cookieParser = require('cookie-parser')
+var bodyParser = require('body-parser')
+var session = require('express-session')
 
 var knexConfig = ('./knexfile.js')
+
 var env = process.env.NODE_ENV || 'development'
 var knex = Knex({
   client: 'postgresql',
@@ -13,14 +20,24 @@ var knex = Knex({
   }
 });
 
-var app = express();
 
+app.use(cookieParser())
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'client')));
+
+app.use(session({ secret: 'ilovesecrets' }))
+app.use(passport.initialize())
+app.use(passport.session())
+app.use(flash())
 
 app.get('/', function (req, res){
   res.redirect('client/index.html')
 })
+
+app.get('/login', function (req, res) {
+  
+})
+
 
 app.get('/api/v1/tasks', function (req, res) {
   knex.select('*').from('tasks').where({id: 1})
@@ -46,5 +63,4 @@ app.post('/api/v1/save', function (req, res){
     })
 })
 
-var port = app.listen(process.env.PORT || 3000)
 app.listen(port);
