@@ -33,14 +33,12 @@ app.get('/api/v1/tasks', function (req, res) {
 })
 
 app.post('/api/v1/save', function (req, res){
-//need to make sure you can save blank strings and the like.
-//maybe put handler in client side?
-
-console.log('req.body ', req.body);
     var taskArr = req.body.tasks
     console.log('taskArr ', taskArr);
-    knex.insert({task: taskArr}).into('tasks')
-    .then(function (data) {
+    knex('tasks')
+      .where('id', '=', 1)
+      .update({task: taskArr})
+      .then(function (data) {
       console.log("Tasks saved")
     })
     .catch(function(err){
