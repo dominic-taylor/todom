@@ -9,13 +9,17 @@ var saveTasksBtn = document.getElementById('saveTasksBtn')
 saveTasksBtn.addEventListener("click", saveTasks, false);
 
 var logIn = document.getElementById('logIn')
-logIn.addEventListener("click", findUser, false);
+logIn.addEventListener("click", checkUser, false);
 
-function findUser() {
+function checkUser() {
   //get name and pass from field
   // pass to ?
   request
-
+    .post('/')
+    .send()
+    .end(function (err, res){
+      if(err) console.log(err);
+    })
 }
 
 

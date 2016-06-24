@@ -3,6 +3,7 @@ var app = express()
 var port = process.env.PORT || 3000
 var Knex = require('knex')
 var passport = require('passport')
+var LocalStrategy = require('passport-local').Strategy
 var flash = require('connect-flash')
 var path = require('path')
 
@@ -30,14 +31,46 @@ app.use(passport.initialize())
 app.use(passport.session())
 app.use(flash())
 
+
+passport.use(new LocalStrategy({
+    usernameField: 'user',
+    passwordField: 'pass'
+  },
+  function(username, password, done) {
+      console.log('login process: ', username);
+      return done('SELECT user_id, user_name FROM users WHERE user_name=$1 AND user_pass=$2', username, password)
+    .then( function (result){
+      return done(null, result)
+    })
+  .catch( function (err){
+      console.log("/login: " + err);
+      return done(null, false, {message: 'wrong username or password'})
+    })
+}))
+
+passport.serializeUser(function(user, done){
+  done(null, user.user_id)
+})
+
+passport.deserializeUser(function(id, done) {
+  done("SELECT user_id, user_name FROM users user_id  =$1", id)
+  .then( function(user){
+    done(null, user)
+  })
+  .catch(function (err){
+    done(new Error('User with the id ${id} does not exist'))
+  })
+})
+
+app.post('/',
+  passport.authenticate('local', { successRedirect: '/',
+                                   failureRedirect: '/',
+                                   failureFlash: true}))
+
+
 app.get('/', function (req, res){
   res.redirect('client/index.html')
 })
-
-app.get('/login', function (req, res) {
-  
-})
-
 
 app.get('/api/v1/tasks', function (req, res) {
   knex.select('*').from('tasks').where({id: 1})
