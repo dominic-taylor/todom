@@ -36,11 +36,13 @@ function addUser() {
 }
 
 function checkUser() {
-  //get name and pass from field
-  // pass to ?
+  user = document.getElementById('userName').value
+  pass = document.getElementById('userPass').value
+  user = { name: user,
+           pass: pass  }
   request
-    .post('/')
-    .send()
+    .post('/login')
+    .send(user)
     .end(function (err, res){
       if(err) console.log(err);
     })
@@ -59,7 +61,6 @@ function saveTasks(){
 
 function getTaskData() {
   var taskData = document.getElementsByClassName('new')
-  console.log('taskData ', taskData);
   var taskArr = []
   for (var i=0; i<taskData.length; i++){
     console.log('listener hooked up '+ taskData[i].value)
@@ -81,7 +82,6 @@ function getSavedTasks() {
 
 function displayTasks(savedTasks) {
   var dayPoints = document.getElementsByClassName('new')
-  console.log(savedTasks);
   var loopLen = savedTasks.length
   for(var i = 0; i < loopLen; i++){
     dayPoints[i].value = savedTasks[i].replace(/"/g, "")

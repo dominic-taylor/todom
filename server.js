@@ -31,15 +31,16 @@ app.use(passport.initialize())
 app.use(passport.session())
 app.use(flash())
 
-
+// How to login properly? does not seem to hit this at all.
 passport.use(new LocalStrategy({
     usernameField: 'user',
     passwordField: 'pass'
   },
   function(username, password, done) {
       console.log('login process: ', username);
-      return done('SELECT user_id, user_name FROM users WHERE user_name=$1 AND user_pass=$2', username, password)
+      return done('SELECT user_name FROM accounts WHERE user_name=$1 AND user_pass=$2', username, password)
     .then( function (result){
+      console.log('login sucess ', username);
       return done(null, result)
     })
   .catch( function (err){
@@ -53,7 +54,7 @@ passport.serializeUser(function(user, done){
 })
 
 passport.deserializeUser(function(id, done) {
-  done("SELECT user_id, user_name FROM users user_id  =$1", id)
+  done("SELECT user_id, user_name FROM accounts user_id  =$1", id)
   .then( function(user){
     done(null, user)
   })
@@ -63,7 +64,7 @@ passport.deserializeUser(function(id, done) {
 })
 
 
-app.post('/',
+app.post('/login',
   passport.authenticate('local', { successRedirect: '/',
                                    failureRedirect: '/',
                                    failureFlash: true})
@@ -74,7 +75,10 @@ app.get('/', function (req, res){
 })
 
 app.get('/api/v1/tasks', function (req, res) {
-  knex.select('*').from('tasks').where({id: 1})
+  console.log('req etc ', req.user);
+  knex('users')
+    .join('tasks', 'user_name', '=', 'tasks.user')
+    .select('*').where(user_name, 'John')//username:req.user ( ? )
     .then(function(data){
       res.send(data)
     })
@@ -86,18 +90,20 @@ app.get('/api/v1/tasks', function (req, res) {
 app.post('/signup', function (req, res) {
   console.log('user written ', req.body.name, req.body.pass);
   knex('accounts')
-    .insert({user: req.body.name, hash: req.body.pass})
+    .insert({user_name: req.body.name, hash: req.body.pass})
     .then(function () {
       console.log('user written');
       res.redirect('/')
     })
 })
+
 app.post('/api/v1/save', function (req, res){
     var taskArr = req.body.tasks
+    console.log('user? ',req);
+    // username = req.body.user?
     console.log('taskArr ', taskArr);
     knex('tasks')
-      .where('id', '=', 1)
-      .update({task: taskArr})
+      .insert({task: taskArr, user: username})
       .then(function (data) {
       console.log("Tasks saved")
     })
