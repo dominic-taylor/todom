@@ -62,11 +62,12 @@ passport.deserializeUser(function(id, done) {
   })
 })
 
+
 app.post('/',
   passport.authenticate('local', { successRedirect: '/',
                                    failureRedirect: '/',
-                                   failureFlash: true}))
-
+                                   failureFlash: true})
+)
 
 app.get('/', function (req, res){
   res.redirect('client/index.html')
@@ -82,6 +83,15 @@ app.get('/api/v1/tasks', function (req, res) {
     })
 })
 
+app.post('/signup', function (req, res) {
+  console.log('user written ', req.body.name, req.body.pass);
+  // knex('users')
+  //   .insert({user: req.body.name, pass: req.body.pass})
+  //   .then(function () {
+  //     console.log('user written');
+  //   })
+
+})
 app.post('/api/v1/save', function (req, res){
     var taskArr = req.body.tasks
     console.log('taskArr ', taskArr);

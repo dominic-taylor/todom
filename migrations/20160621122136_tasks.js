@@ -6,6 +6,12 @@ exports.up = function(knex, Promise) {
     table.integer('userId')
     table.string('task')
   })
+  .createTableIfNotExists('accounts',
+  function(table) {
+    table.increments('id');
+    table.string('account_name');
+    table.integer('user_id').unsigned().references('users.id');
+})
 };
 
 exports.down = function(knex, Promise) {

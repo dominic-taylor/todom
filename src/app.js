@@ -1,4 +1,5 @@
 var request = require('superagent')
+var bcrypt = require('bcryptjs')
 
 document.addEventListener("DOMContentLoaded", function(event) {
 
@@ -10,6 +11,24 @@ saveTasksBtn.addEventListener("click", saveTasks, false);
 
 var logIn = document.getElementById('logIn')
 logIn.addEventListener("click", checkUser, false);
+
+var signUp = document.getElementById('signUp')
+signUp.addEventListener("click", addUser, false);
+
+
+function addUser() {
+  user = document.getElementById('userName').value
+  pass = document.getElementById('userPass').value
+  user = { name: user,
+           pass: pass  }
+
+  request
+    .post('/signup')
+    .send(user)
+    .end(function (err, res) {
+      if (err) console.log(err);
+    })
+}
 
 function checkUser() {
   //get name and pass from field
