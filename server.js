@@ -85,12 +85,12 @@ app.get('/api/v1/tasks', function (req, res) {
 
 app.post('/signup', function (req, res) {
   console.log('user written ', req.body.name, req.body.pass);
-  // knex('users')
-  //   .insert({user: req.body.name, pass: req.body.pass})
-  //   .then(function () {
-  //     console.log('user written');
-  //   })
-
+  knex('accounts')
+    .insert({user: req.body.name, hash: req.body.pass})
+    .then(function () {
+      console.log('user written');
+      res.redirect('/')
+    })
 })
 app.post('/api/v1/save', function (req, res){
     var taskArr = req.body.tasks

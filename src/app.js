@@ -19,6 +19,11 @@ signUp.addEventListener("click", addUser, false);
 function addUser() {
   user = document.getElementById('userName').value
   pass = document.getElementById('userPass').value
+  // bcrypt.genSalt(10, function(err, salt) {
+  //   bcrypt.hash(pass, salt, function(err, hash){
+  //
+  //   })
+  // })
   user = { name: user,
            pass: pass  }
 
