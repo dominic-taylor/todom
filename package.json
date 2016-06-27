@@ -21,11 +21,17 @@
   },
   "homepage": "https://github.com/dominic-taylor/todom#readme",
   "dependencies": {
+    "bcryptjs": "^2.3.0",
     "body-parser": "^1.15.1",
     "browserify": "^13.0.1",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.3",
     "express": "^4.13.4",
+    "express-session": "^1.13.0",
     "fs": "0.0.2",
     "knex": "^0.11.7",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
     "pg": "^5.1.0",
     "superagent": "^2.0.0"
   },

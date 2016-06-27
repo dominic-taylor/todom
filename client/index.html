@@ -8,8 +8,14 @@
   </head>
   <body>
     <div id='wrapper'>
-      <form id='taskForm'>
       <div id='btn-box'>
+        <form action="/login" method="post">
+          <input id='userName' ='text' name="username" onclick="this.select()" value='username'>
+          <input id='userPass' type='password' name="password" onclick="this.select()"  value='password'>
+        </form>
+        <button id='logIn' class="btn" type="button" name='email'>Login</button>
+        <button id='signUp' class="btn" type="button" name='email'>Sign Up</button>
+      <form id='taskForm'>
         <button id='getTasksBtn' class='btn' type="button" name="name" value="">My List</button>
         <button id='saveTasksBtn' class='btn' type="button" name="name" value="">Save List</button>
       </div> <!-- btn-box -->
@@ -17,10 +23,10 @@
         <div id='old'>
           <h3>This week</h3>
           <ul id='list'>
-            <li>M:<p>AM</p>  <input class='new' id='monA' type="text" name="name" onclick="this.select()" value="What to do ?"><br>
-                   <p>PM</p> <input class='new' id='monP' type="text" name="name" onclick="this.select()" value="What to do ?"> </li>
-            <li>T: <p>AM</p>  <input class='new' id='tueA' type="text" name="name" onclick="this.select()" value="What to do ?"><br>
-                   <p>PM</p> <input class='new' id='tueP' type="text" name="name" onclick="this.select()" value="What to do ?"> </li>
+            <li>M:<p>AM</p>  <input class='new' id='monA' type="text" name="name" onclick="this.select()" value="Log in or"><br>
+                   <p>PM</p> <input class='new' id='monP' type="text" name="name" onclick="this.select()" value="Sign up to "> </li>
+            <li>T: <p>AM</p>  <input class='new' id='tueA' type="text" name="name" onclick="this.select()" value="save your weekly list"><br>
+                   <p>PM</p> <input class='new' id='tueP' type="text" name="name" onclick="this.select()" value="of things to do !"> </li>
             <li>W:<p>AM</p><input class='new' id='wedA' type="text" name="name" onclick="this.select()" value="What to do ?"><br>
                    <p>PM</p> <input class='new' id='wedP' type="text" name="name" onclick="this.select()" value="What to do ?"> </li>
             <li>Th:<p>AM</p><input class='new' id='thuA' type="text" name="name" onclick="this.select()" value="What to do ?"><br>

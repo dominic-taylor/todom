@@ -1,4 +1,5 @@
 var request = require('superagent')
+var bcrypt = require('bcryptjs')
 
 document.addEventListener("DOMContentLoaded", function(event) {
 
@@ -7,6 +8,45 @@ getTasksBtn.addEventListener("click", getSavedTasks, false);
 
 var saveTasksBtn = document.getElementById('saveTasksBtn')
 saveTasksBtn.addEventListener("click", saveTasks, false);
+
+var logIn = document.getElementById('logIn')
+logIn.addEventListener("click", checkUser, false);
+
+var signUp = document.getElementById('signUp')
+signUp.addEventListener("click", addUser, false);
+
+
+function addUser() {
+  user = document.getElementById('userName').value
+  pass = document.getElementById('userPass').value
+  // bcrypt.genSalt(10, function(err, salt) {
+  //   bcrypt.hash(pass, salt, function(err, hash){
+  //
+  //   })
+  // })
+  user = { name: user,
+           pass: pass  }
+
+  request
+    .post('/signup')
+    .send(user)
+    .end(function (err, res) {
+      if (err) console.log(err);
+    })
+}
+
+function checkUser() {
+  user = document.getElementById('userName').value
+  pass = document.getElementById('userPass').value
+  user = { name: user,
+           pass: pass  }
+  request
+    .post('/login')
+    .send(user)
+    .end(function (err, res){
+      if(err) console.log(err);
+    })
+}
 
 
 function saveTasks(){
@@ -21,7 +61,6 @@ function saveTasks(){
 
 function getTaskData() {
   var taskData = document.getElementsByClassName('new')
-  console.log('taskData ', taskData);
   var taskArr = []
   for (var i=0; i<taskData.length; i++){
     console.log('listener hooked up '+ taskData[i].value)
@@ -43,7 +82,6 @@ function getSavedTasks() {
 
 function displayTasks(savedTasks) {
   var dayPoints = document.getElementsByClassName('new')
-  console.log(savedTasks);
   var loopLen = savedTasks.length
   for(var i = 0; i < loopLen; i++){
     dayPoints[i].value = savedTasks[i].replace(/"/g, "")
