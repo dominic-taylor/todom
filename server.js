@@ -20,13 +20,13 @@ var knex = Knex({
 });
 
 
-app.use(cookieParser());
+// app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(express.static(path.join(__dirname, 'client')));
 
 app.use(session({
-  secret: 'ilovesecrets', resave: true, saveUninitialized: true}))
+  secret: 'ilovesecrets', resave: false, saveUninitialized: true}))
 app.use(flash())
 
 app.get('/logout', function (req, res) {
@@ -36,11 +36,12 @@ app.get('/logout', function (req, res) {
 })
 
 app.get('/', function (req, res){
+  console.log('res.ses', res.session);
   res.redirect('client/index.html')
 })
 
 app.post('/login', function (req, res) {
-
+console.log('loged');
   knex('accounts').where({user_name: req.body.name})
   .then (function (data) {
     console.log('userdata ', data);
@@ -65,9 +66,6 @@ app.post('/login', function (req, res) {
   })
 })
 
-
-
-
 app.post('/signup', function (req, res) {
   var usernameTaken = false;
 
@@ -83,19 +81,19 @@ app.post('/signup', function (req, res) {
           console.log(data.length);
           req.session.name = req.body.name
           req.session.userId = data.length + 1
-          console.log('req.ses.uId ', req.session.userId);
+          console.log('req.ses.uId ', req.session);
           return knex('accounts').insert({user_name: req.body.name, hash: req.body.pass})
         }
       })
 
- res.redirect('/')
+ res.redirect('/login')
 })
 
 app.get('/api/v1/tasks', function (req, res) {
   console.log('req.session.userId ', req.session.userId);
   knex('accounts')
-  .join('tasks', 'id', '=', 'tasks.userId')
-  .select('*').where('userId', req.session.userId) //tasks.userId?
+  .join('tasks', 'accounts.id', '=', 'tasks.userId')
+  .select('*').where('userId', req.session.userId)
   .then(function(data){
     console.log('i think it is getting');
     res.send(data)
@@ -105,12 +103,12 @@ app.get('/api/v1/tasks', function (req, res) {
   })
 })
 
-app.post('/api/v1/save', function (req, res){
+app.post('/api/v1/save', function (req, res){ // req.session is not persisting.
     var taskArr = req.body.tasks
     console.log('taskArr ', taskArr);
     console.log('req.ses ', req.session);
     knex('tasks')
-      .update({task: taskArr, user: req.session.name, userId: req.session.userId})
+      .insert({task: taskArr, user: req.session.name, userId: req.session.userId})
       .then(function (data) {
       console.log("Tasks saved for username ",req.session.name )
       console.log('and userId ', req.session.userId);
