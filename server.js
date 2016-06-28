@@ -25,8 +25,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(express.static(path.join(__dirname, 'client')));
 
-app.use(session({
-  secret: 'ilovesecrets', resave: false, saveUninitialized: true}))
+app.use(session({secret: 'ilovesecrets', resave: false, saveUninitialized: true}))
 app.use(flash())
 
 app.get('/logout', function (req, res) {
@@ -82,6 +81,7 @@ app.post('/signup', function (req, res) {
           req.session.name = req.body.name
           req.session.userId = data.length + 1
           console.log('req.ses.uId ', req.session);
+          req.session.save()
           return knex('accounts').insert({user_name: req.body.name, hash: req.body.pass})
         }
       })
@@ -103,7 +103,7 @@ app.get('/api/v1/tasks', function (req, res) {
   })
 })
 
-app.post('/api/v1/save', function (req, res){ // req.session is not persisting.
+app.post('/api/v1/save', function (req, res){ 
     var taskArr = req.body.tasks
     console.log('taskArr ', taskArr);
     console.log('req.ses ', req.session);
