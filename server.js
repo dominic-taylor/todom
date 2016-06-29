@@ -17,7 +17,12 @@ var knex = Knex({
   client: 'postgresql',
   connection: {
     database: 'todo'
-  }
+  },
+  pool: {
+    min:2,
+    max:10
+  },
+  production: process.env.DATABASE_URL
 });
 
 
