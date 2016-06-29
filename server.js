@@ -93,7 +93,7 @@ app.post('/signup', function (req, res) {
         }
       })
 
- res.redirect('/login')
+ res.redirect('/')
 })
 
 app.get('/api/v1/tasks', function (req, res) { // try to get latest tasks for user or..
