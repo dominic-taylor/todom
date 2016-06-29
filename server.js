@@ -49,7 +49,7 @@ app.post('/login', function (req, res) {
 console.log('loged');
 if (req.body.name === '') {
   console.log('no user name!');
-  res.redirect('/')
+  res.redirect('client/index.html')
 }
   knex('accounts').where({user_name: req.body.name})
   .then (function (data) {
@@ -58,11 +58,11 @@ if (req.body.name === '') {
       req.session.name = req.body.name
       req.session.userId = data[0].id
       console.log('user '+ req.session.userId +' in session!');
-      res.redirect('/')
+      res.redirect('client/index.html')
     }
     else {
       console.log('wrong password');
-      res.redirect('/')
+      res.redirect('client/index.html')
     }
   })
   .catch(function (err) {
@@ -93,7 +93,8 @@ app.post('/signup', function (req, res) {
         }
       })
 
- res.redirect('/')
+      res.redirect('client/index.html')
+ // i think i have to be expliciti with redirect i.e '/client/index.html' ?
 })
 
 app.get('/api/v1/tasks', function (req, res) { // try to get latest tasks for user or..
@@ -143,6 +144,8 @@ app.post('/api/v1/save', function (req, res){ //check if user has tasks already 
                       })
             }
           })
+  res.redirect('client/index.html')
+
 })
 
 app.listen(port);
