@@ -1,5 +1,4 @@
 var request = require('superagent')
-var bcrypt = require('bcryptjs')
 
 document.addEventListener("DOMContentLoaded", function(event) {
 
@@ -19,13 +18,9 @@ var logOut = document.getElementById('logOutBtn')
 logOut.addEventListener("click", logOutUser, false);
 
 function addUser() {
-  user = document.getElementById('userName').value
-  pass = document.getElementById('userPass').value
-  // bcrypt.genSalt(10, function(err, salt) {
-  //   bcrypt.hash(pass, salt, function(err, hash){
-  //
-  //   })
-  // })
+var  user = document.getElementById('userName').value
+var  pass = document.getElementById('userPass').value
+
   user = { name: user,
            pass: pass  }
 
@@ -38,8 +33,8 @@ function addUser() {
 }
 
 function checkUser() {
-  user = document.getElementById('userName').value
-  pass = document.getElementById('userPass').value
+var  user = document.getElementById('userName').value
+var  pass = document.getElementById('userPass').value
   user = { name: user,
            pass: pass  }
   request
