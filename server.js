@@ -11,7 +11,7 @@ var bodyParser = require('body-parser')
 var session = require('express-session')
 
 var knexConfig = ('./knexfile.js')
-
+var DATABASE_URL = '127.0.0.1:5432'
 var env = process.env.NODE_ENV || 'production'
 var knex = Knex({
   client: 'postgresql',
@@ -25,7 +25,7 @@ var knex = Knex({
   production: process.env.DATABASE_URL
 });
 
-
+console.log('DATABASE_URL ', DATABASE_URL);
 // app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
