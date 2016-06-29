@@ -4,6 +4,7 @@ var port = process.env.PORT || 3000
 var Knex = require('knex')
 var flash = require('connect-flash')
 var path = require('path')
+var bcrypt = require('bcryptjs')
 
 var cookieParser = require('cookie-parser')
 var bodyParser = require('body-parser')
@@ -41,14 +42,14 @@ app.get('/', function (req, res){
 
 app.post('/login', function (req, res) {
 console.log('loged');
+if (req.body.name === '') {
+  console.log('no user name!');
+  res.redirect('/')
+}
   knex('accounts').where({user_name: req.body.name})
   .then (function (data) {
     console.log('userdata ', data);
-    if (req.body.name === '') {
-      console.log('no user name!');
-      res.redirect('/')
-    }
-    else if (req.body.pass == data[0].hash){
+    if (bcrypt.compareSync(req.body.pass, data[0].hash)){
       req.session.name = req.body.name
       req.session.userId = data[0].id
       console.log('user '+ req.session.userId +' in session!');
@@ -67,6 +68,7 @@ console.log('loged');
 
 app.post('/signup', function (req, res) {
   var usernameTaken = false;
+  var hash = bcrypt.hashSync(req.body.pass)
 
   knex.select('user_name').from('accounts')
       .then(function (data){
@@ -82,7 +84,7 @@ app.post('/signup', function (req, res) {
           req.session.userId = data.length + 1
           console.log('req.ses.uId ', req.session);
           req.session.save()
-          return knex('accounts').insert({user_name: req.body.name, hash: req.body.pass})
+          return knex('accounts').insert({user_name: req.body.name, hash: hash})
         }
       })
 
