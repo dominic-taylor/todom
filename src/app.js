@@ -15,6 +15,8 @@ logIn.addEventListener("click", checkUser, false);
 var signUp = document.getElementById('signUp')
 signUp.addEventListener("click", addUser, false);
 
+var logOut = document.getElementById('logOutBtn')
+logOut.addEventListener("click", logOutUser, false);
 
 function addUser() {
   user = document.getElementById('userName').value
@@ -48,6 +50,14 @@ function checkUser() {
     })
 }
 
+function logOutUser() {
+  console.log('logout route hit');
+  request
+    .get('/logout')
+    .end(function (err, res) {
+      if(err) console.log(err);
+    })
+}
 
 function saveTasks(){
   var list = getTaskData()

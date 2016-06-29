@@ -89,7 +89,7 @@ app.post('/signup', function (req, res) {
  res.redirect('/login')
 })
 
-app.get('/api/v1/tasks', function (req, res) {
+app.get('/api/v1/tasks', function (req, res) { // try to get latest tasks for user or..
   console.log('req.session.userId ', req.session.userId);
   knex('accounts')
   .join('tasks', 'accounts.id', '=', 'tasks.userId')
@@ -103,19 +103,39 @@ app.get('/api/v1/tasks', function (req, res) {
   })
 })
 
-app.post('/api/v1/save', function (req, res){ 
+app.post('/api/v1/save', function (req, res){ //check if user has tasks already and update data.
     var taskArr = req.body.tasks
-    console.log('taskArr ', taskArr);
-    console.log('req.ses ', req.session);
-    knex('tasks')
-      .insert({task: taskArr, user: req.session.name, userId: req.session.userId})
-      .then(function (data) {
-      console.log("Tasks saved for username ",req.session.name )
-      console.log('and userId ', req.session.userId);
-    })
-    .catch(function(err){
-      console.log(err);
-    })
+    var newTasksEntry = true;
+
+    knex.select('userId').from('tasks') // if undefined, insert, if found upodate
+        .then(function (data){
+          for(var i=0; i<data.length; i++){
+            console.log('for loop data ', data);
+            console.log('req.ses.userId ', req.session.userId);
+            if (data[i].userId == req.session.userId){
+              console.log('userId has already saved tasks ', data[i].user);
+              newTasksEntry = false;
+            }
+          }
+          if(newTasksEntry) {
+            return knex('tasks')
+                    .insert({user: req.session.name, userId: req.session.userId, task: taskArr})
+                    .then(function (data) {
+                    console.log("new tasks array saved for ",req.session.name )
+                    console.log('userId ', req.session.userId);
+                    })
+          } else {
+            return knex('tasks')
+                        .where('userId', req.session.userId).update({task: taskArr})
+                        .then(function (data) {
+                        console.log("Tasks updated for username ",req.session.name )
+                        console.log('and userId ', req.session.userId);
+                      })
+                      .catch(function(err){
+                        console.log(err);
+                      })
+            }
+          })
 })
 
 app.listen(port);
