@@ -17,12 +17,17 @@ signUp.addEventListener("click", addUser, false);
 var logOut = document.getElementById('logOutBtn')
 logOut.addEventListener("click", logOutUser, false);
 
-function addUser() {
-var  user = document.getElementById('userName').value
-var  pass = document.getElementById('userPass').value
+function parseUser() {
+  var  user = document.getElementById('userName').value
+  var  pass = document.getElementById('userPass').value
+  // if(user.length || pass.length<1) {
+  //   return 'Invalid user or pass'
+  // }
+  return { name: user, pass: pass  }
 
-  user = { name: user,
-           pass: pass  }
+}
+function addUser() {
+var user = parseUser()
 
   request
     .post('/signup')
@@ -33,10 +38,8 @@ var  pass = document.getElementById('userPass').value
 }
 
 function checkUser() {
-var  user = document.getElementById('userName').value
-var  pass = document.getElementById('userPass').value
-  user = { name: user,
-           pass: pass  }
+var user = parseUser()
+
   request
     .post('/login')
     .send(user)
@@ -92,9 +95,6 @@ function displayTasks(savedTasks) {
     dayPoints[i].value = savedTasks[i].replace(/"/g, "")
   }
 }
-// update ?
 
 
-
-//destroy ?
 }); //DOM ready braces
