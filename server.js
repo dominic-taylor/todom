@@ -101,8 +101,8 @@ app.post('/signup', function (req, res) {
 app.get('/api/v1/tasks', function (req, res) { // try to get latest tasks for user or..
   console.log('req.session.userId ', req.session.userId);
   knex('accounts')
-  .join('tasks', 'accounts.id', '=', 'tasks.userId')
-  .select('*').where('userId', req.session.userId)
+  .join('tasks', 'accounts.id', '=', 'tasks.userid')
+  .select('*').where('userid', req.session.userId)
   .then(function(data){
     console.log('i think it is getting');
     res.send(data)
@@ -116,12 +116,12 @@ app.post('/api/v1/save', function (req, res){ //check if user has tasks already 
     var taskArr = req.body.tasks
     var newTasksEntry = true;
 
-    knex.select('userId').from('tasks') // if undefined, insert, if found upodate
+    knex.select('userid').from('tasks') // if undefined, insert, if found upodate
         .then(function (data){
           for(var i=0; i<data.length; i++){
             console.log('for loop data ', data);
             console.log('req.ses.userId ', req.session.userId);
-            if (data[i].userId == req.session.userId){
+            if (data[i].userid == req.session.userId){
               console.log('userId has already saved tasks ', data[i].user);
               newTasksEntry = false;
             }
