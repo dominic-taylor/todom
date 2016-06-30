@@ -1,5 +1,5 @@
+// var dotenv = require('dotenv').load()
 var express = require('express')
-var app = express()
 var port = process.env.PORT || 3000
 var Knex = require('knex')
 var flash = require('connect-flash')
@@ -11,21 +11,24 @@ var bodyParser = require('body-parser')
 var session = require('express-session')
 
 var knexConfig = ('./knexfile.js')
-var DATABASE_URL = '127.0.0.1:5432'
-var env = process.env.NODE_ENV || 'production'
-var knex = Knex({
-  client: 'postgresql',
-  connection: {
-    database: 'todo'
-  },
-  pool: {
-    min:2,
-    max:10
-  },
-  production: process.env.DATABASE_URL
-});
 
-console.log('DATABASE_URL ', DATABASE_URL);
+process.env.NODE_ENV = process.env.NODE_ENV || 'development'
+var knex = Knex(knexConfig[process.env.DATABASE_URL || 'development'])
+
+var app = express()
+// var knex = Knex({
+//   client: 'postgresql',
+//   connection: {
+//     database: 'todo'
+//   },
+//   pool: {
+//     min:2,
+//     max:10
+//   },
+//   production: process.env.DATABASE_URL
+// });
+
+
 // app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
