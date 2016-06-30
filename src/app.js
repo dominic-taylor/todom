@@ -1,21 +1,29 @@
-var request = require('superagent')
-
 document.addEventListener("DOMContentLoaded", function(event) {
 
+var request = require('superagent')
+var sessionButtons = require('../views/sessButtons.hbs')
+var ready = false;
+if (ready) {
 var getTasksBtn = document.getElementById('getTasksBtn')
 getTasksBtn.addEventListener("click", getSavedTasks, false);
 
 var saveTasksBtn = document.getElementById('saveTasksBtn')
 saveTasksBtn.addEventListener("click", saveTasks, false);
 
+var logOut = document.getElementById('logOutBtn')
+logOut.addEventListener("click", logOutUser, false);
+}
 var logIn = document.getElementById('logIn')
 logIn.addEventListener("click", checkUser, false);
 
 var signUp = document.getElementById('signUp')
 signUp.addEventListener("click", addUser, false);
+ var sess = '<div id='inSession'>
+   <button id='getTasksBtn' class='btn' type="button" name="name" value="">My List</button>
+   <button id='saveTasksBtn' class='btn' type="button" name="name" value="">Save List</button>
+   <button id='logOutBtn' class='btn' type="button" name="name" value="">Logout</button>
+ </div>'
 
-var logOut = document.getElementById('logOutBtn')
-logOut.addEventListener("click", logOutUser, false);
 
 function parseUser() {
   var  user = document.getElementById('userName').value
@@ -33,8 +41,13 @@ var user = parseUser()
     .post('/signup')
     .send(user)
     .end(function (err, res) {
-      if (err) console.log(err);
-    })
+        if (res.body.user){
+         console.log('res.body', res.body);
+         ready = true;
+         var matches = document.querySelectorAll('div#outSession');
+         matches.innerHTML = sess
+       }
+     })
 }
 
 function checkUser() {
@@ -44,7 +57,10 @@ var user = parseUser()
     .post('/login')
     .send(user)
     .end(function (err, res){
-      if(err) console.log(err);
+      console.log('res.body', res.body);
+      var matches = document.querySelectorAll('div#outSession');
+      console.log(matches);
+      matches.innerHTML =   sessionButtons
     })
 }
 

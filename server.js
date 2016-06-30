@@ -6,7 +6,7 @@ var bodyParser = require('body-parser')
 var flash = require('connect-flash')
 var bcrypt = require('bcryptjs')
 var Knex = require('knex')
-
+var hbs = require('hbs')
 var cookieParser = require('cookie-parser')
 var session = require('express-session')
 
@@ -14,19 +14,9 @@ var knexConfig = require('./knexfile')
 var knex = Knex(knexConfig[process.env.NODE_ENV || 'development'])
 
 var app = express()
-// var knex = Knex({
-//   client: 'postgresql',
-//   connection: {
-//     database: 'todo'
-//   },
-//   pool: {
-//     min:2,
-//     max:10
-//   },
-//   production: process.env.DATABASE_URL
-// });
 
-
+app.set('views', path.join(__dirname, 'views'))
+app.set('view engine', 'hbs')
 // app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
@@ -38,20 +28,16 @@ app.use(flash())
 app.get('/logout', function (req, res) {
   console.log('logging out...');
   req.session.destroy()
-  res.redirect('client/index.html')
+  res.redirect('/')
 })
 
 app.get('/', function (req, res){
   console.log('res.ses', res.session);
-  res.redirect('client/index.html')
+  res.render('index', { inSession: req.session.userId })
 })
 
 app.post('/login', function (req, res) {
-console.log('loged');
-if (req.body.name === '') {
-  console.log('no user name!');
-  res.redirect('client/index.html')
-}
+console.log('logged');
   knex('accounts').where({user_name: req.body.name})
   .then (function (data) {
     console.log('userdata ', data);
@@ -59,11 +45,12 @@ if (req.body.name === '') {
       req.session.name = req.body.name
       req.session.userId = data[0].id
       console.log('user '+ req.session.userId +' in session!');
-      res.redirect('client/index.html')
+
+      res.json({user: req.body.name}) // res.send/res.json(req.session.userId) for button rendering
     }
     else {
       console.log('wrong password');
-      res.redirect('client/index.html')
+      return res.redirect('/')
     }
   })
   .catch(function (err) {
@@ -75,7 +62,7 @@ if (req.body.name === '') {
 app.post('/signup', function (req, res) {
   var usernameTaken = false;
   var hash = bcrypt.hashSync(req.body.pass)
-
+  console.log('signup route');
   knex.select('user_name').from('accounts')
       .then(function (data){
         for(var i=0; i<data.length; i++){
@@ -94,8 +81,7 @@ app.post('/signup', function (req, res) {
         }
       })
 
-      res.redirect('/client/index.html')
- // i think i have to be expliciti with redirect i.e '/client/index.html' ?
+      res.redirect('/')
 })
 
 app.get('/api/v1/tasks', function (req, res) { // try to get latest tasks for user or..
@@ -145,7 +131,7 @@ app.post('/api/v1/save', function (req, res){ //check if user has tasks already 
                       })
             }
           })
-  res.redirect('client/index.html')
+          res.render('index', { inSession: false })
 
 })
 
