@@ -13,7 +13,7 @@ var session = require('express-session')
 var knexConfig = ('./knexfile.js')
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development'
-var knex = Knex(knexConfig[process.env.DATABASE_URL || 'development'])
+var knex = Knex(knexConfig['production' || 'development'])
 
 var app = express()
 // var knex = Knex({
