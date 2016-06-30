@@ -1,19 +1,17 @@
-// var dotenv = require('dotenv').load()
+process.env.NODE_ENV = process.env.NODE_ENV || 'development'
+var dotenv = require('dotenv').load()
 var express = require('express')
-var port = process.env.PORT || 3000
-var Knex = require('knex')
-var flash = require('connect-flash')
 var path = require('path')
+var bodyParser = require('body-parser')
+var flash = require('connect-flash')
 var bcrypt = require('bcryptjs')
+var Knex = require('knex')
 
 var cookieParser = require('cookie-parser')
-var bodyParser = require('body-parser')
 var session = require('express-session')
 
-var knexConfig = ('./knexfile.js')
-
-process.env.NODE_ENV = process.env.NODE_ENV || 'development'
-var knex = Knex(knexConfig['production' || 'development'])
+var knexConfig = require('./knexfile')
+var knex = Knex(knexConfig[process.env.NODE_ENV || 'development'])
 
 var app = express()
 // var knex = Knex({
@@ -151,4 +149,5 @@ app.post('/api/v1/save', function (req, res){ //check if user has tasks already 
 
 })
 
+var port = process.env.PORT || 3000
 app.listen(port);
