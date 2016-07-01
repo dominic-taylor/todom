@@ -22,6 +22,8 @@ document.querySelector('body').addEventListener('click', function(e){
 
 var inSess = "<form id='taskForm'> <button id='getTasksBtn' class='btn' type='button' name='name' value=''>My List</button>   <button id='saveTasksBtn' class='btn' type='button' name='name' value=''>Save List</button> <button id='logOutBtn' class='btn' type='button' name='name' value=''>Logout</button> </div> "
 
+var outSess = "<div id='inSession'>      <form action='/login' method='post'>        <input id='userName' ='text' name='username' onclick='this.select()' value='username'> <input id='userPass' type='password' name='password' onclick='this.select()'  value='password'>  </form>  <button id='logIn' class='btn' type='button' name='email'>Login</button> <button id='signUp' class='btn' type='button' name='email'>Sign Up</button>  </div> </div> "
+
 function parseUser() {
   var  user = document.getElementById('userName').value
   var  pass = document.getElementById('userPass').value
@@ -32,7 +34,7 @@ function parseUser() {
 
 }
 function addUser() {
-var user = parseUser()
+  var user = parseUser()
 
   request
     .post('/signup')
@@ -40,27 +42,22 @@ var user = parseUser()
     .end(function (err, res) {
         if (res.body.user){
          console.log('res.body', res.body);
-         ready = true;
-         var matches = document.getElementById('buttons')
-         console.log('m' ,matches);
-         matches.innerHTML = inSess
+         document.getElementById('buttons').innerHTML = inSess
+         setMessage('Hey, '+ res.body.user)
        }
      })
 }
 
 function checkUser() {
-var user = parseUser()
+  var user = parseUser()
 
   request
     .post('/login')
     .send(user)
     .end(function (err, res){
       console.log('res.body', res.body);
-      ready = true;
-      var matches = document.getElementById('buttons')
-      console.log('m' ,matches);
-
-      matches.innerHTML = inSess
+      document.getElementById('buttons').innerHTML = inSess
+      setMessage(res.body.user+"'s week")
     })
 }
 
@@ -70,12 +67,16 @@ function logOutUser() {
     .get('/logout')
     .end(function (err, res) {
       if(err) console.log(err);
-      message = document.getElementById('message')
-      // document.getElementById("myForm").reset()
-      message.innerHTML = 'Logged Out!'
+      setMessage('Logged Out!')
+      document.getElementById('buttons').innerHTML = outSess
+      document.getElementsByClassName("new").reset()
     })
 }
+function setMessage(message) {
+  var indicator = document.getElementById('message')
+  indicator.innerHTML = message
 
+}
 function saveTasks(){
   var list = getTaskData()
   request
@@ -84,7 +85,7 @@ function saveTasks(){
     .end(function(err, res){
       if(err) console.log(err);
       message = document.getElementById('message')
-      message.innerHTML = 'Saved Tasks'
+      message.innerHTML = 'Tasks Saved'
     })
 }
 

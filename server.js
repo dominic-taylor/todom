@@ -77,11 +77,11 @@ app.post('/signup', function (req, res) {
           req.session.userId = data.length + 1
           console.log('req.ses.uId ', req.session);
           req.session.save()
-          return knex('accounts').insert({user_name: req.body.name, hash: hash})
+          knex('accounts').insert({user_name: req.body.name, hash: hash})
+          return res.json({user: req.body.name})
         }
+        else return res.json({user: req.body.name+' username taken'})
       })
-
-      res.redirect('/')
 })
 
 app.get('/api/v1/tasks', function (req, res) { // try to get latest tasks for user or..
@@ -108,13 +108,13 @@ app.post('/api/v1/save', function (req, res){ //check if user has tasks already 
             console.log('for loop data ', data);
             console.log('req.ses.userId ', req.session.userId);
             if (data[i].userid == req.session.userId){
-              console.log('userId has already saved tasks ', data[i].username);
+              console.log('userId has already saved tasks ', data[i].userName);
               newTasksEntry = false;
             }
           }
           if(newTasksEntry) {
             return knex('tasks')
-                    .insert({username: req.session.name, userid: req.session.userId, task: taskArr})
+                    .insert({userName: req.session.name, userid: req.session.userId, task: taskArr})
                     .then(function (data) {
                     console.log("new tasks array saved for ",req.session.name )
                     console.log('userId ', req.session.userId);
