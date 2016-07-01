@@ -1,29 +1,26 @@
 document.addEventListener("DOMContentLoaded", function(event) {
 
 var request = require('superagent')
-var sessionButtons = require('../views/sessButtons.hbs')
-var ready = false;
-if (ready) {
-var getTasksBtn = document.getElementById('getTasksBtn')
-getTasksBtn.addEventListener("click", getSavedTasks, false);
 
-var saveTasksBtn = document.getElementById('saveTasksBtn')
-saveTasksBtn.addEventListener("click", saveTasks, false);
+document.querySelector('body').addEventListener('click', function(e){
+  if(e.target.id === 'logIn'){
+    e.target.addEventListener("click", checkUser, false);
+  }
+  if(e.target.id == 'signUp'){
+  signUp.addEventListener("click", addUser, false);
+  }
+  if(e.target.id == 'getTasksBtn'){
+    e.target.addEventListener("click", getSavedTasks, false);
+  }
+  if(e.target.id === 'saveTasksBtn'){
+    e.target.addEventListener("click", saveTasks, false);
+  }
+  if(e.target.id === 'logOutBtn'){
+    e.target.addEventListener("click", logOutUser, false);
+  }
+})
 
-var logOut = document.getElementById('logOutBtn')
-logOut.addEventListener("click", logOutUser, false);
-}
-var logIn = document.getElementById('logIn')
-logIn.addEventListener("click", checkUser, false);
-
-var signUp = document.getElementById('signUp')
-signUp.addEventListener("click", addUser, false);
- var sess = '<div id='inSession'>
-   <button id='getTasksBtn' class='btn' type="button" name="name" value="">My List</button>
-   <button id='saveTasksBtn' class='btn' type="button" name="name" value="">Save List</button>
-   <button id='logOutBtn' class='btn' type="button" name="name" value="">Logout</button>
- </div>'
-
+var inSess = "<form id='taskForm'> <button id='getTasksBtn' class='btn' type='button' name='name' value=''>My List</button>   <button id='saveTasksBtn' class='btn' type='button' name='name' value=''>Save List</button> <button id='logOutBtn' class='btn' type='button' name='name' value=''>Logout</button> </div> "
 
 function parseUser() {
   var  user = document.getElementById('userName').value
@@ -44,8 +41,9 @@ var user = parseUser()
         if (res.body.user){
          console.log('res.body', res.body);
          ready = true;
-         var matches = document.querySelectorAll('div#outSession');
-         matches.innerHTML = sess
+         var matches = document.getElementById('buttons')
+         console.log('m' ,matches);
+         matches.innerHTML = inSess
        }
      })
 }
@@ -58,9 +56,11 @@ var user = parseUser()
     .send(user)
     .end(function (err, res){
       console.log('res.body', res.body);
-      var matches = document.querySelectorAll('div#outSession');
-      console.log(matches);
-      matches.innerHTML =   sessionButtons
+      ready = true;
+      var matches = document.getElementById('buttons')
+      console.log('m' ,matches);
+
+      matches.innerHTML = inSess
     })
 }
 
@@ -70,6 +70,9 @@ function logOutUser() {
     .get('/logout')
     .end(function (err, res) {
       if(err) console.log(err);
+      message = document.getElementById('message')
+      // document.getElementById("myForm").reset()
+      message.innerHTML = 'Logged Out!'
     })
 }
 
@@ -80,6 +83,8 @@ function saveTasks(){
     .send({"tasks":list})
     .end(function(err, res){
       if(err) console.log(err);
+      message = document.getElementById('message')
+      message.innerHTML = 'Saved Tasks'
     })
 }
 
