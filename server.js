@@ -100,13 +100,13 @@ app.post('/api/v1/save', function (req, res){ //check if user has tasks already 
             console.log('for loop data ', data);
             console.log('req.ses.userId ', req.session.userId);
             if (data[i].userid == req.session.userId){
-              console.log('userId has already saved tasks ', data[i].userName);
+              console.log('userId has already saved tasks ', data[i].username);
               newTasksEntry = false;
             }
           }
           if(newTasksEntry) {
             return knex('tasks')
-                    .insert({userName: req.session.name, userid: req.session.userId, task: JSON.stringify(taskArr)})
+                    .insert({username: req.session.name, userid: req.session.userId, task: JSON.stringify(taskArr)})
                     .then(function (data) {
                     console.log("new tasks array ", taskArr)
                     console.log("saved for ",req.session.name )

@@ -4,7 +4,7 @@ exports.up = function(knex, Promise) {
   return knex.schema.createTableIfNotExists('tasks', function(table) {
     table.increments('id')
     table.integer('userid')
-    table.string('userName')// change to user name
+    table.string('username')
     table.json('task')
   })
 };
