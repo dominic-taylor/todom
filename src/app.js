@@ -108,10 +108,10 @@ function getSavedTasks() {
   .get('/api/v1/tasks')
   .end(function(err, res){
     if (err) console.log(err);
-    console.log('res', res);
-    var saved = res.body[0].task
-    savedarr = saved.substring(1, saved.length-1).split(",")
-    displayTasks(savedarr)
+    console.log('res.body of getSavedTasks', res.body);
+    setMessage('This week')
+    var saved = res.body// refactor
+    displayTasks(res.body)
   })
 }
 
@@ -119,7 +119,7 @@ function displayTasks(savedTasks) {
   var dayPoints = document.getElementsByClassName('new')
   var loopLen = savedTasks.length
   for(var i = 0; i < loopLen; i++){
-    dayPoints[i].value = savedTasks[i].replace(/"/g, "")
+    dayPoints[i].value = savedTasks[i]
   }
 }
 

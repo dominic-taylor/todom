@@ -31,16 +31,6 @@ app.get('/logout', function (req, res) {
   res.redirect('/')
 })
 
-function authenticated(attemptedUser) {
-  knex('accounts').where({user_name: attemptedUser})
-  .then(function (data) {
-    if(data.user_name.length<1){
-      return false
-    }
-    else return true
-  })
-}
-
 app.post('/login', function (req, res) {
 
 console.log('logged');
@@ -83,8 +73,8 @@ app.post('/signup', function (req, res) {
           req.session.userId = data.length + 1
           console.log('req.ses.uId ', req.session);
           req.session.save()
-          knex('accounts').insert({user_name: req.body.name, hash: hash})
-          return res.json({user: req.body.name})
+          res.json({user: req.body.name})
+          return knex('accounts').insert({user_name: req.body.name, hash: hash})
         }
         else return res.json({user: req.body.name+' username taken'})
       })
@@ -97,8 +87,8 @@ app.get('/api/v1/tasks', function (req, res) { // try to get latest tasks for us
   .select('*').where('userid', req.session.userId)
   .then(function(data){
     console.log('i think it is getting');
-    console.log(data);
-    res.json(data)
+    console.log(data[0].task);
+    res.json(data[0].task)
   })
   .catch(function (err) {
     console.log(err)
@@ -108,8 +98,6 @@ app.get('/api/v1/tasks', function (req, res) { // try to get latest tasks for us
 app.post('/api/v1/save', function (req, res){ //check if user has tasks already and update data.
     var taskArr = req.body.tasks
     var newTasksEntry = true;
-    console.log('jsonless ', taskArr);
-    console.log('json ', JSON.stringify(taskArr));
     knex.select('userid').from('tasks') // if undefined, insert, if found upodate
         .then(function (data){
           for(var i=0; i<data.length; i++){
@@ -122,7 +110,7 @@ app.post('/api/v1/save', function (req, res){ //check if user has tasks already 
           }
           if(newTasksEntry) {
             return knex('tasks')
-                    .insert({userName: req.session.name, userid: req.session.userId, task: taskArr})
+                    .insert({userName: req.session.name, userid: req.session.userId, task: JSON.stringify(taskArr)})
                     .then(function (data) {
                     console.log("new tasks array ", taskArr)
                     console.log("saved for ",req.session.name )
@@ -130,7 +118,7 @@ app.post('/api/v1/save', function (req, res){ //check if user has tasks already 
                     })
           } else {
             return knex('tasks')
-                        .where('userid', req.session.userId).update({task: taskArr})
+                        .where('userid', req.session.userId).update({task: JSON.stringify(taskArr)})
                         .then(function (data) {
                         console.log("Tasks updated for username ",req.session.name )
                         console.log('and userId ', req.session.userId);
@@ -140,7 +128,7 @@ app.post('/api/v1/save', function (req, res){ //check if user has tasks already 
                       })
             }
           })
-          res.render('index', { inSession: false })
+          res.end()
 
 })
 
