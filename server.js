@@ -23,25 +23,18 @@ app.use(flash())
 
 app.get('/logout', function (req, res) {
   req.session.destroy()
-  console.log('logging out...', req.session);
   res.redirect('/')
 })
 
 app.post('/login', function (req, res) {
-
-console.log('logged');
   knex('accounts').where({user_name: req.body.name})
   .then (function (data) {
-    console.log('userdata ', data);
     if (bcrypt.compareSync(req.body.pass, data[0].hash)){
       req.session.name = req.body.name
       req.session.userId = data[0].id
-      console.log('user '+ req.session.name +' in session!');
-
-      return res.json({user: req.session.name, notUser: ''}) // res.send/res.json(req.session.userId) for button rendering
+      return res.json({user: req.session.name, notUser: ''})
     }
     else {
-      console.log('wrong password');
       return res.json({user: '', notUser: "True"})
     }
   })
@@ -55,7 +48,6 @@ console.log('logged');
 app.post('/signup', function (req, res) {
   var usernameTaken = false;
   var hash = bcrypt.hashSync(req.body.pass)
-  console.log('signup route');
   knex.select('user_name').from('accounts')
       .then(function (data){
         for(var i=0; i<data.length; i++){
@@ -64,10 +56,8 @@ app.post('/signup', function (req, res) {
           }
         }
         if(!usernameTaken){
-          console.log(data.length);
           req.session.name = req.body.name
           req.session.userId = data.length + 1
-          console.log('req.ses.uId ', req.session);
           req.session.save()
           res.json({user: req.body.name})
           return knex('accounts').insert({user_name: req.body.name, hash: hash})
@@ -76,14 +66,11 @@ app.post('/signup', function (req, res) {
       })
 })
 
-app.get('/api/v1/tasks', function (req, res) { // try to get latest tasks for user or..
-  console.log('req.session.userId ', req.session.userId);
+app.get('/api/v1/tasks', function (req, res) {
   knex('accounts')
   .join('tasks', 'accounts.id', '=', 'tasks.userid')
   .select('*').where('userid', req.session.userId)
   .then(function(data){
-    console.log('i think it is getting');
-    console.log(data[0].task);
     res.json(data[0].task)
   })
   .catch(function (err) {
@@ -97,31 +84,19 @@ app.post('/api/v1/save', function (req, res){ //check if user has tasks already 
     knex.select('userid').from('tasks') // if undefined, insert, if found upodate
         .then(function (data){
           for(var i=0; i<data.length; i++){
-            console.log('for loop data ', data);
-            console.log('req.ses.userId ', req.session.userId);
             if (data[i].userid == req.session.userId){
-              console.log('userId has already saved tasks ', data[i].username);
               newTasksEntry = false;
             }
           }
           if(newTasksEntry) {
             return knex('tasks')
                     .insert({username: req.session.name, userid: req.session.userId, task: JSON.stringify(taskArr)})
-                    .then(function (data) {
-                    console.log("new tasks array ", taskArr)
-                    console.log("saved for ",req.session.name )
-                    console.log('userId ', req.session.userId);
-                    })
           } else {
             return knex('tasks')
                         .where('userid', req.session.userId).update({task: JSON.stringify(taskArr)})
-                        .then(function (data) {
-                        console.log("Tasks updated for username ",req.session.name )
-                        console.log('and userId ', req.session.userId);
-                      })
-                      .catch(function(err){
+                        .catch(function(err){
                         console.log(err);
-                      })
+                        })
             }
           })
           res.end()

@@ -27,12 +27,11 @@ var outSess = "<div id='inSession'>      <form action='/login' method='post'>   
 function parseUser() {
   var  user = document.getElementById('userName').value
   var  pass = document.getElementById('userPass').value
-  // if(user.length || pass.length<1) {
-  //   return 'Invalid user or pass'
-  // }
+
   return { name: user, pass: pass  }
 
 }
+
 function addUser() {
   var user = parseUser()
 
@@ -41,7 +40,6 @@ function addUser() {
     .send(user)
     .end(function (err, res) {
         if (res.body.user){
-         console.log('res.body', res.body);
          document.getElementById('buttons').innerHTML = inSess
          setMessage('Hey, '+ res.body.user)
        }
@@ -55,7 +53,6 @@ function checkUser() {
     .post('/login')
     .send(user)
     .end(function (err, res){
-      console.log('res.body', res.body.notUser);
       if(res.body.notUser=='True') {setMessage('Invalid credentials')}
       else {
         setMessage(res.body.user+"'s week")
@@ -65,7 +62,6 @@ function checkUser() {
 }
 
 function logOutUser() {
-  console.log('logout route hit');
   request
     .get('/logout')
     .end(function (err, res) {
@@ -98,10 +94,8 @@ function getTaskData() {
   var taskData = document.getElementsByClassName('new')
   var taskArr = []
   for (var i=0; i<taskData.length; i++){
-    console.log('listener hooked up '+ taskData[i].value)
     taskArr[i] = taskData[i].value
   }
-  console.log(taskArr);
   return taskArr
 }
 
@@ -110,7 +104,6 @@ function getSavedTasks() {
   .get('/api/v1/tasks')
   .end(function(err, res){
     if (err) console.log(err);
-    console.log('res.body of getSavedTasks', res.body);
     setMessage('This week')
     displayTasks(res.body)
   })
