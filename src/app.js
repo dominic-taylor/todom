@@ -55,6 +55,7 @@ function checkUser() {
     .post('/login')
     .send(user)
     .end(function (err, res){
+      if(res.body.notUser) {setMessage(req.body.notUser)}
       console.log('res.body', res.body);
       document.getElementById('buttons').innerHTML = inSess
       setMessage(res.body.user+"'s week")
@@ -69,13 +70,16 @@ function logOutUser() {
       if(err) console.log(err);
       setMessage('Logged Out!')
       document.getElementById('buttons').innerHTML = outSess
-      document.getElementsByClassName("new").reset()
     })
 }
 function setMessage(message) {
-  var indicator = document.getElementById('message')
-  indicator.innerHTML = message
-
+  if (message == 'Logged Out!'){
+    var inputs = document.getElementsByClassName("new")
+    for (var i=0; i<inputs.length; i++){
+      inputs[i].value = 'Write a list of tasks'
+    }
+  }
+  document.getElementById('message').innerHTML =  message
 }
 function saveTasks(){
   var list = getTaskData()
@@ -84,8 +88,7 @@ function saveTasks(){
     .send({"tasks":list})
     .end(function(err, res){
       if(err) console.log(err);
-      message = document.getElementById('message')
-      message.innerHTML = 'Tasks Saved'
+      setMessage('Tasks Saved')
     })
 }
 
@@ -96,6 +99,7 @@ function getTaskData() {
     console.log('listener hooked up '+ taskData[i].value)
     taskArr[i] = taskData[i].value
   }
+  console.log(taskArr);
   return taskArr
 }
 
@@ -104,6 +108,7 @@ function getSavedTasks() {
   .get('/api/v1/tasks')
   .end(function(err, res){
     if (err) console.log(err);
+    console.log('res', res);
     var saved = res.body[0].task
     savedarr = saved.substring(1, saved.length-1).split(",")
     displayTasks(savedarr)

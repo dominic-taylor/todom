@@ -14,9 +14,9 @@ var knexConfig = require('./knexfile')
 var knex = Knex(knexConfig[process.env.NODE_ENV || 'development'])
 
 var app = express()
-
-app.set('views', path.join(__dirname, 'views'))
-app.set('view engine', 'hbs')
+//
+// app.set('views', path.join(__dirname, 'views'))
+// app.set('view engine', 'hbs')
 // app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
@@ -26,17 +26,23 @@ app.use(session({secret: 'ilovesecrets', resave: false, saveUninitialized: true}
 app.use(flash())
 
 app.get('/logout', function (req, res) {
-  console.log('logging out...');
   req.session.destroy()
+  console.log('logging out...', req.session);
   res.redirect('/')
 })
 
-app.get('/', function (req, res){
-  console.log('res.ses', res.session);
-  res.render('index', { inSession: req.session.userId })
-})
+function authenticated(attemptedUser) {
+  knex('accounts').where({user_name: attemptedUser})
+  .then(function (data) {
+    if(data.user_name.length<1){
+      return false
+    }
+    else return true
+  })
+}
 
 app.post('/login', function (req, res) {
+
 console.log('logged');
   knex('accounts').where({user_name: req.body.name})
   .then (function (data) {
@@ -50,10 +56,11 @@ console.log('logged');
     }
     else {
       console.log('wrong password');
-      return res.redirect('/')
+      return res.json({notUser: 'Wrong password'})
     }
   })
   .catch(function (err) {
+    req.session.destroy()
     console.log('error: ', err);
     res.sendStatus(403)
   })
@@ -67,7 +74,6 @@ app.post('/signup', function (req, res) {
       .then(function (data){
         for(var i=0; i<data.length; i++){
           if (data[i].user_name == req.body.name){
-            console.log('data.username taken ', data[i].user_name);
             usernameTaken = true;
           }
         }
@@ -91,7 +97,8 @@ app.get('/api/v1/tasks', function (req, res) { // try to get latest tasks for us
   .select('*').where('userid', req.session.userId)
   .then(function(data){
     console.log('i think it is getting');
-    res.send(data)
+    console.log(data);
+    res.json(data)
   })
   .catch(function (err) {
     console.log(err)
@@ -101,7 +108,8 @@ app.get('/api/v1/tasks', function (req, res) { // try to get latest tasks for us
 app.post('/api/v1/save', function (req, res){ //check if user has tasks already and update data.
     var taskArr = req.body.tasks
     var newTasksEntry = true;
-
+    console.log('jsonless ', taskArr);
+    console.log('json ', JSON.stringify(taskArr));
     knex.select('userid').from('tasks') // if undefined, insert, if found upodate
         .then(function (data){
           for(var i=0; i<data.length; i++){
@@ -116,7 +124,8 @@ app.post('/api/v1/save', function (req, res){ //check if user has tasks already 
             return knex('tasks')
                     .insert({userName: req.session.name, userid: req.session.userId, task: taskArr})
                     .then(function (data) {
-                    console.log("new tasks array saved for ",req.session.name )
+                    console.log("new tasks array ", taskArr)
+                    console.log("saved for ",req.session.name )
                     console.log('userId ', req.session.userId);
                     })
           } else {

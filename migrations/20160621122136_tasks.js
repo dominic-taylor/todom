@@ -5,7 +5,7 @@ exports.up = function(knex, Promise) {
     table.increments('id')
     table.integer('userid')
     table.string('userName')// change to user name
-    table.string('task')
+    table.json('task')
   })
 };
 
