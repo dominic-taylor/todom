@@ -9,20 +9,20 @@
   <body>
     <div id='wrapper'>
       <div id='btn-box'>
-        <form action="/login" method="post">
-          <input id='userName' ='text' name="username" onclick="this.select()" value='username'>
-          <input id='userPass' type='password' name="password" onclick="this.select()"  value='password'>
-        </form>
-        <button id='logIn' class="btn" type="button" name='email'>Login</button>
-        <button id='signUp' class="btn" type="button" name='email'>Sign Up</button>
-      <form id='taskForm'>
-        <button id='getTasksBtn' class='btn' type="button" name="name" value="">My List</button>
-        <button id='saveTasksBtn' class='btn' type="button" name="name" value="">Save List</button>
-          <button id='logOutBtn' class='btn' type="button" name="name" value="">Logout</button>
+        <div id="buttons">
+          <div id='inSession'>
+            <form action="/login" method="post">
+              <input id='userName' ='text' name='username' onclick='this.select()' value='username'>
+              <input id='userPass' type='password' name='password' onclick='this.select()'  value='password'>
+            </form>
+            <button id='logIn' class="btn" type="button" name='email'>Login</button>
+            <button id='signUp' class="btn" type="button" name='email'>Sign Up</button>
+          </div>
+        </div>
       </div> <!-- btn-box -->
-
+      <form id='entries'>
         <div id='old'>
-          <h3>This week</h3>
+          <h3 id='message'>This week</h3>
           <ul id='list'>
             <li>M:<p>AM</p>  <input class='new' id='monA' type="text" name="name" onclick="this.select()" value="Log in or"><br>
                    <p>PM</p> <input class='new' id='monP' type="text" name="name" onclick="this.select()" value="Sign up to "> </li>
