@@ -55,10 +55,12 @@ function checkUser() {
     .post('/login')
     .send(user)
     .end(function (err, res){
-      if(res.body.notUser) {setMessage(req.body.notUser)}
-      console.log('res.body', res.body);
-      document.getElementById('buttons').innerHTML = inSess
-      setMessage(res.body.user+"'s week")
+      console.log('res.body', res.body.notUser);
+      if(res.body.notUser=='True') {setMessage('Invalid credentials')}
+      else {
+        setMessage(res.body.user+"'s week")
+        document.getElementById('buttons').innerHTML = inSess
+      }
     })
 }
 
@@ -110,15 +112,13 @@ function getSavedTasks() {
     if (err) console.log(err);
     console.log('res.body of getSavedTasks', res.body);
     setMessage('This week')
-    var saved = res.body// refactor
     displayTasks(res.body)
   })
 }
 
 function displayTasks(savedTasks) {
   var dayPoints = document.getElementsByClassName('new')
-  var loopLen = savedTasks.length
-  for(var i = 0; i < loopLen; i++){
+  for(var i = 0; i < dayPoints.length; i++){
     dayPoints[i].value = savedTasks[i]
   }
 }

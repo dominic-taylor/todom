@@ -6,7 +6,6 @@ var bodyParser = require('body-parser')
 var flash = require('connect-flash')
 var bcrypt = require('bcryptjs')
 var Knex = require('knex')
-var hbs = require('hbs')
 var cookieParser = require('cookie-parser')
 var session = require('express-session')
 
@@ -14,10 +13,7 @@ var knexConfig = require('./knexfile')
 var knex = Knex(knexConfig[process.env.NODE_ENV || 'development'])
 
 var app = express()
-//
-// app.set('views', path.join(__dirname, 'views'))
-// app.set('view engine', 'hbs')
-// app.use(cookieParser());
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(express.static(path.join(__dirname, 'client')));
@@ -40,13 +36,13 @@ console.log('logged');
     if (bcrypt.compareSync(req.body.pass, data[0].hash)){
       req.session.name = req.body.name
       req.session.userId = data[0].id
-      console.log('user '+ req.session.userId +' in session!');
+      console.log('user '+ req.session.name +' in session!');
 
-      res.json({user: req.body.name}) // res.send/res.json(req.session.userId) for button rendering
+      return res.json({user: req.session.name, notUser: ''}) // res.send/res.json(req.session.userId) for button rendering
     }
     else {
       console.log('wrong password');
-      return res.json({notUser: 'Wrong password'})
+      return res.json({user: '', notUser: "True"})
     }
   })
   .catch(function (err) {
