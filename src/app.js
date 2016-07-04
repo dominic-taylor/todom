@@ -22,7 +22,7 @@ document.querySelector('body').addEventListener('click', function(e){
 
 var inSess = "<form id='taskForm'> <button id='getTasksBtn' class='btn' type='button' name='name' value=''>My List</button>   <button id='saveTasksBtn' class='btn' type='button' name='name' value=''>Save List</button> <button id='logOutBtn' class='btn' type='button' name='name' value=''>Logout</button> </div> "
 
-var outSess = "<div id='inSession'>      <form action='/login' method='post'>        <input id='userName' ='text' name='username' onclick='this.select()' value='username'> <input id='userPass' type='password' name='password' onclick='this.select()'  value='password'>  </form>  <button id='logIn' class='btn' type='button' name='email'>Login</button> <button id='signUp' class='btn' type='button' name='email'>Sign Up</button>  </div> </div> "
+var outSess = "<div id='inSession'>      <form action='/login' method='post'>        <input class='userInfo' id='userName' type='text' name='username' onclick='this.select()' value='username'> <input class='userInfo' id='userPass' type='password' name='password' onclick='this.select()'  value='password'>  </form>  <button id='logIn' class='btn' type='button' name='email'>Login</button> <button id='signUp' class='btn' type='button' name='email'>Sign Up</button>  </div> </div> "
 
 function parseUser() {
   var  user = document.getElementById('userName').value
