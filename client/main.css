@@ -7,7 +7,7 @@
   margin: 5px;
   padding: 0 6px;
   font-size: 25px;
-  border: solid blue;
+  border: solid #2196f3;
   border-radius: 25px;
 
 }
@@ -16,8 +16,8 @@
   background-color: whitesmoke;
 }
 .btn:active{
-  color: white; 
-  background-color: blue;
+  color: white;
+  background-color: #2196f3;
   border: inset 1px;
 }
 #btn-box {
@@ -29,27 +29,41 @@
   width: 100%;
   text-align: center;
 }
-
+.userInfo{
+  display: inline;
+  font-size: 20px;
+  border: 1px solid black;
+}
 .new{
- background-color: rgba(255, 0, 0, 0.16);
+ background-color: transparent;
  display: inline;
- height: 40px;
+ border: 0px solid black;
+ border-bottom: 1px solid black;
+ height: 30px;
  width: 80%;
- margin-bottom: 10px;
- font-size: 30px;
+ font-size: 25px;
+ margin: 4%;
+}
+.icons {
+  display: block;
+  color: #FFC107;
+  font-size: 18px;
+  width: 0;
+  height: 0;
+  margin: 4%;
+}
+#sunA, #thuA {
+  margin-left: 0px;
 }
 #old{
-  background-color: rgba(0, 0, 255, 0.16);
-  height: 850px;
   margin: auto;
   font-size: 25px;
+  padding-bottom: 10%;
 }
 #taskForm {
   width: 90%:
 }
-#mon {
-  display: none:
-}
+
 p {
   display: inline;
 }
@@ -64,10 +78,12 @@ li {
   background-color: inherit;
   text-align: justify;
   font-family: sans-serif;
-  margin: 0 4%;
+  font-size: 15px;
+  margin: 0 0;
 }
+
 h3 {
-  margin-top: 10px;
+  margin: 5px 5px;
   font-weight: normal;
   font-style: italic;
   font-family: sans-serif;
@@ -78,4 +94,21 @@ h3 {
     margin: auto;
     margin-top: 25px;
   }
+  li {
+    margin: 4%;
+  }
+
+  .new, {
+    margin: 0 4%;
+  }
+  .icons {
+    font-size: 20px:
+  }
+  #sunA, #thuA{
+   margin-left: 4%;
+  }
+  h3 {
+    margin; auto;
+  }
+
 }

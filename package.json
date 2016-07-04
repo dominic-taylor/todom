@@ -7,7 +7,7 @@
     "bundle": "browserify src/app.js -o client/bundle.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "serve": "node-dev server.js",
-    "watch": "watchify -t hbsfy src/app.js -o client/bundle.js -dv"
+    "watch": "watchify src/app.js -o client/bundle.js -dv"
   },
   "repository": {
     "type": "git",
@@ -30,7 +30,6 @@
     "express": "^4.13.4",
     "express-session": "^1.13.0",
     "fs": "0.0.2",
-    "hbsfy": "^2.7.0",
     "knex": "^0.11.7",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
