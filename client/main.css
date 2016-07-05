@@ -8,8 +8,6 @@
   padding: 0 6px;
   font-size: 25px;
   border: solid #2196f3;
-  border-radius: 25px;
-
 }
 .btn:focus{
   outline: 0;
@@ -18,7 +16,7 @@
 .btn:active{
   color: white;
   background-color: #2196f3;
-  border: inset 1px;
+  border: inset 2px;
 }
 #btn-box {
   display: inline-block;
@@ -51,6 +49,9 @@
   width: 0;
   height: 0;
   margin: 4%;
+}
+.dark{
+  color: #E65100;
 }
 #sunA, #thuA {
   margin-left: 0px;
@@ -97,7 +98,9 @@ h3 {
   li {
     margin: 4%;
   }
-
+  .btn {
+    margin: 18px;
+  }
   .new, {
     margin: 0 4%;
   }
